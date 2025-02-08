@@ -1,0 +1,35 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/product.css">
+    </head>
+
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+            <main>
+                <% if (products.length > 0) { %>
+                    <% for (product of products) { %>
+                        <span style="display:inline-block; margin-right: 20px;">
+                            <img src="<%= product.prodId.imageUrl %>" height="180px">
+                            <h4 style="margin: 5px 0px"><%= product.prodId.title %> x <%= product.quantity %><br>
+                                $<%= product.prodId.price * product.quantity %>
+                            </h4>
+                            <form action="/delete-cart" method="POST">
+                                <input type="hidden" value="<%= csrfToken %>" name="_csrf">
+                                <input type="hidden" value="<%= product.prodId._id %>" name="id">
+                                <button class="btn">Delete</button>
+                            </form>
+                        </span>
+                    <% } %>
+                    <hr style="margin-top: 50px;">
+                    <div class="centered">
+                        <h3>Total Cart Value: $<%= total %></h3>
+                        <a href="/checkout" class="btn">Checkout</a>
+                    </div>
+                    <!-- <form action="/checkout" method="POST">
+                        <input type="hidden" value="<%= csrfToken %>" name="_csrf">
+                        <button type="submit" class="btn">Checkout</button>
+                    </form> -->
+                <% } else { %>
+                    <h1>No Products Found!</h1>
+                <% } %>
+            </main>
+            <%- include('../includes/end.ejs') %>

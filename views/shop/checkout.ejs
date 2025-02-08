@@ -1,0 +1,34 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/product.css">
+    </head>
+
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+            <main>
+                <% for (product of products) { %>
+                    <span style="display:inline-block; margin-right: 20px;">
+                        <img src="<%= product.prodId.imageUrl %>" height="180px">
+                        <h4 style="margin: 5px 0px"><%= product.prodId.title %> x <%= product.quantity %><br>
+                            $<%= product.prodId.price * product.quantity %>
+                        </h4>
+                    </span>
+                    <% } %>
+                <hr style="margin-top: 50px;">
+                <h3 class="centered">Total Cart Value: $<%= total %></h3>
+                <div class="centered">
+                    <button class="btn" id="order-btn">ORDER</button>
+                    <script src="https://js.stripe.com/v3/"></script>
+                    <script>
+                        var stripe = Stripe('pk_test_51QmyNVKGWa2x1KB4QTByE8lU9r8Lt3p2YCznsTstto6u3XTosE0AyZhcShzak4V6HgYqJGyvHERmbTj9OAaSGvwc00aUjx5rkc');
+                        var orderButton = document.getElementById('order-btn');
+                        orderButton.addEventListener('click',function() {
+                            stripe.redirectToCheckout({sessionId: '<%= sessionId %>'});
+                        });
+                    </script>
+                </div>
+                <!-- <form action="/orders" method="POST"> -->
+                    <!-- <input type="hidden" value="<%= csrfToken %>" name="_csrf"> -->
+                    <!-- <button type="submit" class="btn">Order Now</button> -->
+                <!-- </form> -->
+            </main>
+            <%- include('../includes/end.ejs') %>
